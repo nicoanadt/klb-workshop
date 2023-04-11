@@ -212,7 +212,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 6. Load data using Redshift Spectrum into Redshift internal table
 
      ```
-     insert into klb.sales_consolidate select * from klb_spectrum.sales_consolidate;
+     insert into klb.sales_consolidate select * from klb_spectrum.sales_consolidate_parquet;
      ```
 
 8. Observe the runtime of data load
