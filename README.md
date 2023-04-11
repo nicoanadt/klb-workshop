@@ -213,6 +213,26 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 ## 5. Load to Redshift using Glue Studio
 
+### Setup S3 Gateway Endpoint in VPC
+
+In this step, we will create S3 Gateway Endpoint so that Redshift cluster can communicate with S3 using its private IP.
+
+1. Go to: **AWS VPC Console**
+2. Click Create endpoint
+     - Name tag - optional: `RedshiftS3EP`
+     - Select AWS Services under Service category (which is the default selection)
+     - Under Service name search box, search for "s3" and hit enter/return.
+     - `com.amazonaws.[region].s3` should come up as search result. Select this option with type as `Gateway`.
+     - Under VPC, choose non-default VPC. This is the same VPC which was used for configuring redshift cluster.
+          - If you have more than VPC listed in the drop down list, double check Redshift VPC to avoid any confusion. Do the following:
+          - Go to: Redshift Console  
+          - Click on redshift cluster name
+          - Click on Properties tab.
+          - Scroll down and check Network and security section for VPC name.
+     - Once you have double checked VPC id, move to configuring Route tables section.
+     - Select the listed route tables (checklist both route table)
+3. Click Create endpoint. It should take a couple of seconds to provision this. Once this is ready, you should see Status as Available against the newly created S3 endpoint.
+
 ### Setup Glue Connection
 
 1. Open AWS Glue page
