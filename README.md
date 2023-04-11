@@ -152,7 +152,9 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
            )
      AS SELECT * FROM "klb_db"."sales_consolidate";
      ```
-
+7. Open the S3 location in 's3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/'
+     - Observe the file format
+     - Observe the total filesize
 
 ## 4. Load to Redshift using Glue Studio
 ## 5. Load to Redshift using Redshift Spectrum
