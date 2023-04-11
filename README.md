@@ -238,7 +238,13 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
           - Choose **Direct data connection**
           - Select Redshift connection `redshift-cluster-connection-dev`
           - Select Schema `klb_rs`
-          - Select new table name
+          - Select new table name `sales_consolidate_rs`
+     - Save job as `klb_sales_consolidate_s3_to_rs`
+     - Click Job Details
+          - Choose IAM Role `AnalyticsworkshopGlueRole`
+          - Enable `Automatically scale the number of workers`
+     - Click **Save**
+     - Click **Run**
 
 
 ## Orchestrate Glue jobs using Step Function
