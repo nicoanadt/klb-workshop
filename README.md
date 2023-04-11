@@ -152,11 +152,39 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
            )
      AS SELECT * FROM "klb_db"."sales_consolidate";
      ```
-7. Open the S3 location in 's3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/'
+7. Open the S3 location in `s3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/`
      - Observe the file format
      - Observe the total filesize
 
 ## 4. Load to Redshift using Glue Studio
+
+### Setup Glue Connection
+
+1. Open AWS Glue page
+2. Open `Data Connections page, create connection in Glue by clicking **Create Connection**
+     - Enter connection name `redshift-cluster-connection-dev`
+     - Choose connection type `Redshift`
+     - Choose Database instances `consumercluster-xxxxxxx`
+     - Database name `dev`
+     - Username `awsuser`
+     - Password `Awsuser123`
+     - Click **Create Connection**
+
+### Create Glue Job
+1. Open **ETL Jobs** page
+2. Choose **Visual with a source and target**
+3. Choose Source `AWS Glue Data Catalog` and Target `Amazon Redshift`
+4. Click **Create** on upper right
+5. Glue Studio Editor page is opened.
+     - Choose Data source 
+          - Database: `klb_db`
+          - Table: `Sales_consolidate`
+     - Choose Data target
+          - Choose **Direct data connection**
+          - Select Redshift connection `redshift-cluster-connection-dev`
+          - Select Schema `klb_rs`
+          - Select new table name
+
 ## 5. Load to Redshift using Redshift Spectrum
 ## Query in Redshift
 ## Orchestrate Glue jobs using Step Function
