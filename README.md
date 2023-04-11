@@ -180,7 +180,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 4.  Create schema
 
      ```
-     CREATE SCHEMA klb_rs;
+     CREATE SCHEMA klb;
      ```
 
 
@@ -204,8 +204,18 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 3. Query to S3 data lake using Redshift Spectrum
 4. Create Redshift table from existing Glue Data Catalog table
-5. Load data using Redshift Spectrum into Redshift internal table
-6. Observe the runtime of data load
+
+   ```
+   create table klb.sales_consolidate as select * from klb_spectrum.sales_consolidate where 1=2;
+   ```
+
+6. Load data using Redshift Spectrum into Redshift internal table
+
+     ```
+     insert into klb.sales_consolidate select * from klb_spectrum.sales_consolidate;
+     ```
+
+8. Observe the runtime of data load
      - Observe the performance
      - Observe the total cost of data loading process
 
