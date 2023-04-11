@@ -171,7 +171,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      Username `awsuser`
      Password `Awsuser123`
      ```
-3. Select a sample query. If it is succeesful, congrats! You are now connected to Redshift
+3. Select a sample query. If it is successful, congrats! You are now connected to Redshift
 
      ```
      select * from pg_user;
@@ -187,20 +187,20 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 ### Create external schema to use Redshift Spectrum
 
 1. In Redshift, there are two ways of loading data from S3 to Redshift using Redshift features:
-     a. Using COPY command to load data from S3 files
-     b. Using Redshift Spectrum to query into S3 data lake
+     - Using COPY command to load data from S3 files
+     - Using Redshift Spectrum to query into S3 data lake
      
      
      In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the crawler object.
 
 2. Create external schema in Redshift
 
-```
-create external schema klb_spectrum 
-from data catalog 
-database 'klb_db' 
-iam_role 'arn:aws:iam::130835040051:role/myspectrum_role';
-```
+     ```
+     create external schema klb_spectrum 
+     from data catalog 
+     database 'klb_db' 
+     iam_role 'arn:aws:iam::130835040051:role/myspectrum_role';
+     ```
 
 3. Query to S3 data lake using Redshift Spectrum
 4. Create Redshift table from existing Glue Data Catalog table
