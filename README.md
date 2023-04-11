@@ -61,6 +61,25 @@
     
 ## 2. Run Glue Crawler to load data to Glue Data Catalog
 
+### Create IAM ROle
+
+In this step we will navigate to the IAM Console and create a new AWS Glue service role. This allows AWS Glue to access the data stored in S3 and to create the necessary entities in the Glue Data Catalog.
+
+1. Go to **IAM**
+2. Click **Create role**
+    - Choose the service that will use this role: `Glue`
+    - Click Next
+    - Search for `AmazonS3FullAccess`
+    - Select the entry's checkbox
+    - Search for `AWSGlueServiceRole`
+    - Select the entry's checkbox
+    - Click Next
+    - Role name: `AnalyticsworkshopGlueRole`
+    - Make sure that only two policies attached to this role (`AmazonS3FullAccess`, `AWSGlueServiceRole`)
+3. Click **Create role**
+
+### Create Crawler
+
 1. Open AWS Glue page
 2. Click on **Crawlers** > **Create Crawler**
      - Crawler info
