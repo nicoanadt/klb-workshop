@@ -59,10 +59,55 @@
 
     `s3:/[BUCKETNAME]/data/raw/sales_consolidate/`
     
-## Crawl 
-## Query using Athena
-## Load to Redshift using Glue
-## Load to Redshift using COPY command
+## 2. Run Glue Crawler to load data to Glue Data Catalog
+
+1. Open AWS Glue page
+2. Click on **Crawlers** > **Create Crawler**
+     - Crawler info
+          - Crawler name: `AnalyticsworkshopCrawler`
+     - Click Next
+     - Click Add a data source
+          Choose a Data source:
+          - Data source: `S3`
+     - Leave Network connection - optional as-is
+     - Select In this account under Location of S3 data
+          - Include S3 path: `s3://yourname-analytics-workshop-bucket/data/`
+          - Leave Subsequent crawler runs to default selection of Crawl all sub-folders
+          - Click Add an S3 data source
+          - Select recently added S3 data source under Data Sources
+     - Click Next
+     - IAM Role
+          - Under Existing IAM role, select `AnalyticsworkshopGlueRole`
+          - Leave everything else as-is.
+     - Click Next
+     - Output configuration:
+          - Click Add database to bring up a new window for creating a database.
+          - Database details
+          - Name: `klb_db`
+          - Click Create database
+          - Closes the current window and returns to the previous window.
+          - Refresh by clicking the refresh icon to the right of the Target database
+          - Choose analyticsworkshopdb under Target database
+     - Under Crawler schedule
+          - Frequency: `On demand`
+          - Click Next
+     - Review all settings under Review and create
+     - Click **Create crawler**
+3. You should see this message: The following crawler is now created: "AnalyticsworkshopCrawler". 
+   - Click **Run crawler** to run the crawler for the first time
+   - Wait for few minutes
+
+4. Verify newly created tables in catalog.
+     - Navigate to **Glue Catalog** and explore the crawled data:
+          - Click database`klb_db`
+          - Click Tables in `klb_db`
+          - Click `sales_consolidate`
+               - Look around and explore the schema for your dataset
+               - look for the averageRecordSize, recordCount, compressionType
+
+## 3. Query and analyze using Athena
+## 4. Load to Redshift using Glue Studio
+## 5. Load to Redshift using Redshift Spectrum
 ## Query in Redshift
 ## Orchestrate Glue jobs using Step Function
 ## Orchestrate Redshift queries using Step Function
