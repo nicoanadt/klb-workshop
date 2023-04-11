@@ -90,7 +90,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
           - Data source: `S3`
      - Leave Network connection - optional as-is
      - Select In this account under Location of S3 data
-          - Include S3 path: `s3://yourname-analytics-workshop-bucket/data/`
+          - Include S3 path: `s3://yourname-analytics-workshop-bucket/data/raw/sales_consolidate/`
           - Leave Subsequent crawler runs to default selection of Crawl all sub-folders
           - Click Add an S3 data source
           - Select recently added S3 data source under Data Sources
