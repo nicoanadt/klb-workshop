@@ -55,6 +55,14 @@
 
 4. Open the following link in new tab : https://s3.console.aws.amazon.com/s3/buckets/kalbe-workshop-test-130835040051-apse1?region=ap-southeast-1&prefix=data/sales_consolidate/&showversions=false 
 
-5. Copy all partitions inside `s3://kalbe-workshop-test-130835040051-apse1/data/sales_consolidate/` to your bucket folder
+5. Copy all partitions inside `s3://kalbe-workshop-test-130835040051-apse1/data/sales_consolidate/` to your bucket folder:
 
     `s3:/[BUCKETNAME]/data/raw/sales_consolidate/`
+    
+## Crawl 
+## Query using Athena
+## Load to Redshift using Glue
+## Load to Redshift using COPY command
+## Query in Redshift
+## Orchestrate Glue jobs using Step Function
+## Orchestrate Redshift queries using Step Function
