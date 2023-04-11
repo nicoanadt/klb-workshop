@@ -154,9 +154,64 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      ```
 7. Open the S3 location in `s3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/`
      - Observe the file format
-     - Observe the total filesize
+     - Compare the total filesize of csv file vs parquet
 
-## 4. Load to Redshift using Glue Studio
+
+## 4. Load to Redshift using Redshift Spectrum
+
+### Query in Redshift
+
+1. **Open Redshift Query Editor v2**
+     - If prompted, you may need to configure the Query Editor.
+     - On the left-hand side, click on the Redshift environment you want to connect to.
+     ![](https://static.us-east-1.prod.workshops.aws/public/36b90137-7dd0-42c6-b8f2-000e56e508fc/static/images/lab1/ConnectionV2.png)
+2. Connect to `consumercluster-xxxxxx`
+     - Enter the Database name and user name. Click connect. These credentials should be used for both the Serverless endpoint (workgroup-xxxxxxx) as well as the provisioned cluster (consumercluster-xxxxxxxxxx).
+     ```
+     Username `awsuser`
+     Password `Awsuser123`
+     ```
+3. Select a sample query. If it is succeesful, congrats! You are now connected to Redshift
+
+     ```
+     select * from pg_user;
+     ```
+
+4.  Create schema
+
+     ```
+     CREATE SCHEMA klb_rs;
+     ```
+
+
+### Create external schema to use Redshift Spectrum
+
+1. In Redshift, there are two ways of loading data from S3 to Redshift using Redshift features:
+     a. Using COPY command to load data from S3 files
+     b. Using Redshift Spectrum to query into S3 data lake
+     
+     
+     In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the crawler object.
+
+2. Create external schema in Redshift
+
+```
+create external schema klb_spectrum 
+from data catalog 
+database 'klb_db' 
+iam_role 'arn:aws:iam::130835040051:role/myspectrum_role';
+```
+
+3. Query to S3 data lake using Redshift Spectrum
+4. Create Redshift table from existing Glue Data Catalog table
+5. Load data using Redshift Spectrum into Redshift internal table
+6. Observe the runtime of data load
+     - Observe the performance
+     - Observe the total cost of data loading process
+
+
+
+## 5. Load to Redshift using Glue Studio
 
 ### Setup Glue Connection
 
@@ -185,7 +240,6 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
           - Select Schema `klb_rs`
           - Select new table name
 
-## 5. Load to Redshift using Redshift Spectrum
-## Query in Redshift
+
 ## Orchestrate Glue jobs using Step Function
 ## Orchestrate Redshift queries using Step Function
