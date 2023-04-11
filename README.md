@@ -6,7 +6,7 @@
 
 1. Create S3 bucket
 
-     `s3://[BUCKET-NAME]`
+     `s3://[BUCKET-NAME]`, for example `s3://yourname-analytics-workshop-bucket`
      
 2. Create folder inside: 
 
@@ -61,7 +61,7 @@
     
 ## 2. Run Glue Crawler to load data to Glue Data Catalog
 
-### Create IAM ROle
+### Create IAM Role
 
 In this step we will navigate to the IAM Console and create a new AWS Glue service role. This allows AWS Glue to access the data stored in S3 and to create the necessary entities in the Glue Data Catalog.
 
@@ -124,7 +124,34 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
                - Look around and explore the schema for your dataset
                - look for the averageRecordSize, recordCount, compressionType
 
-## 3. Query and analyze using Athena
+## 3. Query and analyze the data lake using Amazon Athena
+
+1. Open Athena page > klik **Launch Query Editor**
+2. Set query results location in S3 for first time use: 
+     - Click **Edit settings**
+     - Point to `s3://yourname-analytics-workshop-bucket/query_result/`
+     - Click **Save**
+4. Explore metadata, and run sample query:  
+
+     ```
+     SELECT * FROM "klb_db"."sales_consolidate" limit 10; 
+     ```
+     
+     Explore your data.
+6. Create new table using CTAS statement in Athena to create new table with Parquet file
+
+     ```
+     CREATE TABLE "klb_db"."sales_consolidate_parquet"
+     WITH (
+           format = 'Parquet',
+           write_compression = 'SNAPPY',
+           external_location = 's3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/',
+           partitioned_by = ARRAY['filename']) 
+           )
+     AS SELECT * FROM "klb_db"."sales_consolidate";
+     ```
+
+
 ## 4. Load to Redshift using Glue Studio
 ## 5. Load to Redshift using Redshift Spectrum
 ## Query in Redshift
