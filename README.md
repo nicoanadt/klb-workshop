@@ -106,7 +106,9 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
           - Click Create database
           - Closes the current window and returns to the previous window.
           - Refresh by clicking the refresh icon to the right of the Target database
-          - Choose analyticsworkshopdb under Target database
+          - Choose `klb_db` under Target database
+          - Click **Advanced options**
+          - Checklist `Update all new and existing partitions with metadata from the table`
      - Under Crawler schedule
           - Frequency: `On demand`
           - Click Next
