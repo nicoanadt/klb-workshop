@@ -265,6 +265,10 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
           - Enable `Automatically scale the number of workers`
      - Click **Save**
      - Click **Run**
+6. Once the job is finished, note down the:
+     - Execution runtime
+     - Number of workers
+     - DPU hours : used for cost calculation
 
 
 ## Orchestrate Glue jobs using Step Function
