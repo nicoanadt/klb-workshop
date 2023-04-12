@@ -410,6 +410,11 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
           from "klb_rs"."sales_consolidate_sorted" where tgldokjdi>'02/OCT/21 00:00:00' 
           group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
           ```
+3. Once you're done, reset the cache to improve performance.
+          ```
+          -- Disable cache for this process
+          SET enable_result_cache_for_session TO ON;
+          ```
 
 
 ### 7.3 Fine-grained Access Control in Redshift
