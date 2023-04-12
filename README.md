@@ -368,13 +368,45 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
           ```
           ```
 4. Perform aggregation query
+     ```
+     ```
+5. Observe the result
+
+### Optimize your table
+
+The default redshift table has AUTO distribution style, AUTO sort key, and AUTO compression. These configurations are working for simple use cases but as your data grow you may want to specify specific values.
+
+- SORTKEY is used to accelerate query by filtering storage blocks which does not contain your data. Sort key typically uses time-series column and other column that is frequently used as query filter.
+- DISTKEY is how the data are distributed across multiple slices and nodes in your cluster. Distribution style has multiple options: `EVEN`, `KEY`, and `ALL` depending on use cases. 
+     - KEY distribution style typically uses a column that frequently joined with another table with similar DISTKEY to colocate the data in the same nodes. However the DISTKEY should have high enough cardinality to avoid data skew.
+     - ALL distribution style will have a data copied in each node, typically used by medium to small reference master tables.
+
+1. Create a table with specified SORTKEY
+     - In this example we are using `tgldokjdi` and `sup_name` as sortkey
+
+     ```
+     create table klb_rs.sales_consolidate_sorted
+     sortkey (tgldokjdi,sup_name)
+     as select * from klb_rs.sales_consolidate
+     ```
+
+2. Query into the new table
+
+     ```
+     ```
+
+3. Compare the performance against the previous table.
+
+     ```
+     ```
+
 
 ### Fine-grained Access Control in Redshift
 1. Configure users
 2. Setup Column-level access control
 3. Setup Row-based access control
 
-## 7. Orchestrate Redshift Queries using Step Function
+## 8. Orchestrate Redshift Queries using Step Function
 
 AWS Step Functions is a serverless orchestration service that lets you integrate AWS services to build business-critical applications. Step Functions is based on state machines and tasks. A state machine is a workflow. A task is a state in a workflow that represents a single unit of work that another AWS service performs. Each step in a workflow is a state.
 
