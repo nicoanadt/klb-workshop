@@ -577,7 +577,7 @@ For this step we will create a workflow that will call the previous workflow as 
      -  Step 1: Choose `Standard` type
      -  Step 2: Click on `Import/Export` then choose **Import definitions...**. 
           -   Upload the following file: [redshift-run-ELT-workflow](https://raw.githubusercontent.com/nicoanadt/klb-workshop/main/step-functions/redshift-run-ELT-workflow.asl.json)
-          -   Update the configuration in `Generate Execution ID and Parameter` state:               
+          -   Update the configuration in `Generate Execution ID` state:               
                - Click on `Output`, Add the following parameters based on the information of **your** Redshift cluster
                ```
                {
