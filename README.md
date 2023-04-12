@@ -245,8 +245,14 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      insert into klb_rs.sales_consolidate select * from klb_spectrum.sales_consolidate_parquet;
      ```
 
-8. Observe the runtime of data load
+7. Observe the runtime of data load
      - Observe the performance
+     - Observe the rowcount
+     
+          ```
+          SELECT count(*) from klb_rs.sales_consolidate;
+          ```
+     
      - Observe the total cost of data loading process based on data size
 
           ```
@@ -273,13 +279,18 @@ The other option is to use COPY command to load data to Redshift natively. This 
      FORMAT PARQUET FILLRECORD;
      ```
      
-3. Observe loaded table
-
+3. Observe the runtime of data load
+     - Observe the performance
+     - Observe the cost implication
+     - Observe the rowcount
+     
      ```
-     select * from klb_rs.sales_consolidate_copy
+     SELECT count(*) from klb_rs.sales_consolidate;
      ```
 
 ## 6. Load to Redshift using Glue Studio (Option 3)
+
+In this option we are going to explore AWS Glue as data ingestion tools to load data into Redshift
 
 ### Setup S3 Gateway Endpoint in VPC
 
@@ -337,8 +348,33 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      - Execution runtime
      - Number of workers
      - DPU hours : used for cost calculation
+     
+## 7. Run Analytics Queries in Redshift
 
-## 7. Orchestrate Redshift queries using Step Function
+### Create master tables
+1. Open **Redshift Query Editor v2**
+2. Run the following queries:
+3. Create master tables
+     - Create master supplier table
+          ```
+          ```
+     - Create master product table
+          ```
+          ```
+     - Create master branch table
+          ```
+          ```
+     - Create master distributor table
+          ```
+          ```
+4. Perform aggregation query
+
+### Fine-grained Access Control in Redshift
+1. Configure users
+2. Setup Column-level access control
+3. Setup Row-based access control
+
+## 7. Orchestrate Redshift Queries using Step Function
 
 AWS Step Functions is a serverless orchestration service that lets you integrate AWS services to build business-critical applications. Step Functions is based on state machines and tasks. A state machine is a workflow. A task is a state in a workflow that represents a single unit of work that another AWS service performs. Each step in a workflow is a state.
 
@@ -367,18 +403,18 @@ Step Function is very low cost with 4000 state transition free tier per month, a
           - Permissions: `Create a new role`
           - Click **Create state machine**
      - Click on the IAM role that just been created (Edit role in IAM)
-4. In IAM Console for `StepFunctions-redshift-run-query-byparam-role-xxxxx`
+4. Open **IAM Console**, click **Role**, and open role `StepFunctions-redshift-run-query-byparam-role-xxxxx`
      - Click **Add Permissions** > **Attach policies**
      - Select `AmazonRedshiftDataFullAccess` , `AmazonRedshiftFullAccess` , `AWSGlueServiceRole` , `CloudWatchEventsFullAccess`, and `AWSStepFunctionsFullAccess`
      - Click **Add Permissions**
 5. Note down the ARN of the step function for referral by the next process 
-6. Back in Step Functions console page, observe what you have just create
+6. Back in Step Functions console page, observe what you have just create:
      - Definition of the step functions
      - What is being done in this workflow. It will trigger the redshift query using Redshift Data API, and check the execution status until it completes.
 
 ### Create Step Function to orchestrate the end-to-end workflow
 
-For this step we will create a workflow that will call the previous workflow.
+For this step we will create a workflow that will call the previous workflow as nested workflow.
 
 1. Open Step Function console page
 2. Navigate on the left side to open **State Machines**
@@ -387,21 +423,24 @@ For this step we will create a workflow that will call the previous workflow.
      -  Step 2: Click on `Import/Export` then choose **Import definitions...**. 
           -   Upload the following file: [redshift-run-ELT-workflow](https://raw.githubusercontent.com/nicoanadt/klb-workshop/b19882a1241c6b211c165d4222245168a711dd96/step-functions/redshift-run-ELT-workflow.asl.json)
           -   Update the configuration in `Generate Execution ID and Parameter` state:               
-               - Click on `Output`, Add the following parameters
+               - Click on `Output`, Add the following parameters based on the information of **your** Redshift cluster
                ```
                {
                  "rs_database": "dev",
                  "rs_user": "awsuser",
-                 "rs_cluster_ident": "consumercluster-dbfd1libfuzz"
+                 "rs_cluster_ident": "consumercluster-xxxxxxxx"
                }
                ```
-          - Update state machine ARN for Repopulate
+          - Update state machine ARN for each of repopulate jobs.
                - StateMachineArn: `arn:aws:states:ap-southeast-1:[YOUR-ACCOUNT-NUMBER]:stateMachine:redshift-run-query-byparam`
      -  Step 3: Click **Next**
      -  Step 4: Specify settings
           - State machine name: `redshift-run-query-byparam`
           - Permissions: `Create a new role`
           - Click **Create state machine**
+5. Observe what you have just created, we pass the query that we want to run to `redshift-run-query-byparam` workflow for execution.
+6. Click `Start Execution` to trigger the workflow
+7. Observe whether it is successfull or not.
 
 ## Orchestrate Glue jobs using Step Function
 
