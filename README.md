@@ -2,7 +2,7 @@
 
 ## 1. Copy the sample data to your account
 
-### Allow S3 Access
+### 1.1 Allow S3 Access
 
 1. Create S3 bucket
 
@@ -61,7 +61,7 @@
     
 ## 2. Run Glue Crawler to load data to Glue Data Catalog
 
-### Create IAM Role
+### 2.1 Create IAM Role
 
 In this step we will navigate to the IAM Console and create a new AWS Glue service role. This allows AWS Glue to access the data stored in S3 and to create the necessary entities in the Glue Data Catalog.
 
@@ -78,7 +78,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
     - Make sure that only two policies attached to this role (`AmazonS3FullAccess`, `AWSGlueServiceRole`)
 3. Click **Create role**
 
-### Create Crawler
+### 2.2 Create Crawler
 
 1. Open AWS Glue page
 2. Click on **Crawlers** > **Create Crawler**
@@ -159,7 +159,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 ## 4. Load to Redshift using Redshift Spectrum (Option 1)
 
-### Query in Redshift
+### 4.1 Query in Redshift
 
 1. **Open Redshift Query Editor v2**
      - If prompted, you may need to configure the Query Editor.
@@ -185,7 +185,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      CREATE SCHEMA klb;
      ```
      
-### Create IAM role for Redshift Spectrum
+### 4.2 Create IAM role for Redshift Spectrum
 
 1. Open the IAM console.
 
@@ -202,7 +202,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 8. Review the information, and then choose **Create role**.
 9. In the navigation pane, choose **Roles**. Choose the name of your new role to view the summary, and then copy the Role ARN to your clipboard. This value is the Amazon Resource Name (ARN) for the role that you just created. You use that value when you create external tables to reference your data files on Amazon S3.
 
-### Associate IAM role with cluster
+### 4.3 Associate IAM role with cluster
 
 1. Sign in to the AWS Management Console and open the Amazon Redshift console at https://console.aws.amazon.com/redshift/.
 
@@ -215,7 +215,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 5. Choose **Done** to associate the IAM role with the cluster. The cluster is modified to complete the change.
 
 
-### Create external schema to use Redshift Spectrum
+### 4.4 Create external schema to use Redshift Spectrum
 
 1. In Redshift, there are two ways of loading data from S3 to Redshift using Redshift features:
      - Using COPY command to load data from S3 files
@@ -292,7 +292,7 @@ The other option is to use COPY command to load data to Redshift natively. This 
 
 In this option we are going to explore AWS Glue as data ingestion tools to load data into Redshift
 
-### Setup S3 Gateway Endpoint in VPC
+### 6.1 Setup S3 Gateway Endpoint in VPC
 
 In this step, we will create S3 Gateway Endpoint so that Redshift cluster can communicate with S3 using its private IP.
 
@@ -312,7 +312,7 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      - Select the listed route tables (**check both route table**)
 3. Click **Create endpoint**. It should take a couple of seconds to provision this. Once this is ready, you should see Status as Available against the newly created S3 endpoint.
 
-### Setup Glue Connection
+### 6.2 Setup Glue Connection
 
 1. Open AWS Glue page
 2. Open `Data Connections page, create connection in Glue by clicking **Create Connection**
@@ -324,7 +324,7 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      - Password `Awsuser123`
      - Click **Create Connection**
 
-### Create Glue Job for loading into Redshift
+### 6.3 Create Glue Job for loading into Redshift
 1. Open **ETL Jobs** page
 2. Choose **Visual with a source and target**
 3. Choose Source `AWS Glue Data Catalog` and Target `Amazon Redshift`
@@ -351,7 +351,7 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      
 ## 7. Run Analytics Queries in Redshift
 
-### Create master tables
+### 7.1 Create master tables
 1. Open **Redshift Query Editor v2**
 2. Run the following queries:
 3. Create master tables
