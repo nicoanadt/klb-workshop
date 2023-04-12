@@ -159,6 +159,12 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 ## 4. Load to Redshift using Redshift Spectrum (Option 1)
 
+In Redshift, there are two ways of loading data from S3 to Redshift using Redshift features:
+     - Using COPY command to load data from S3 files
+     - Using Redshift Spectrum to query into S3 data lake
+          
+     In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the glue crawler object.
+
 ### 4.1 Query in Redshift
 
 1. **Open Redshift Query Editor v2**
@@ -217,13 +223,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 ### 4.4 Create external schema to use Redshift Spectrum
 
-1. In Redshift, there are two ways of loading data from S3 to Redshift using Redshift features:
-     - Using COPY command to load data from S3 files
-     - Using Redshift Spectrum to query into S3 data lake
-          
-     In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the glue crawler object.
-
-2. Create external schema in Redshift
+1. Create external schema in Redshift
 
      ```
      create external schema klb_spectrum 
@@ -232,20 +232,20 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      iam_role 'arn:aws:iam::[YOUR-ACCOUNT-NUMBER]:role/myspectrum_role';
      ```
 
-3. Query to S3 data lake using Redshift Spectrum
-4. Create Redshift table from existing Glue Data Catalog table
+2. Query to S3 data lake using Redshift Spectrum
+3. Create Redshift table from existing Glue Data Catalog table
 
    ```
    create table klb_rs.sales_consolidate (like klb_spectrum.sales_consolidate_parquet);
    ```
 
-6. Load data using Redshift Spectrum into Redshift internal table
+4. Load data using Redshift Spectrum into Redshift internal table
 
      ```
      insert into klb_rs.sales_consolidate select * from klb_spectrum.sales_consolidate_parquet;
      ```
 
-7. Observe the runtime of data load
+5. Observe the runtime of data load
      - Observe the performance
      - Observe the rowcount
      
@@ -262,7 +262,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 ## 5. Load to Redshift using Redshift COPY command (Option 2)
 
-The other option is to use COPY command to load data to Redshift natively. This method does not incur separate charges other than than the Redshift cluster itself.
+The other option is to use COPY command to load data to Redshift natively. This method **does not incur separate charges** other than than the Redshift cluster itself.
 
 1. Create empty table based on the previous table that we have created.
 
