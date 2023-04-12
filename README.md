@@ -559,6 +559,15 @@ For this step we will create a workflow that will call the previous workflow as 
 
 It is also possible to use Step Function to orchestrate Glue jobs! You can try it on your own.
 
+1. Choose Glue `StartJobRun` component in Step Function
+2. Include the Glue `JobName` as Input component of the state
+     ```
+     {
+       "JobName": "myGlueJobName"
+     }
+     ```
+3. Check the box  `Wait for the task to complete` to wait for each job completion in the workflow.
+
 
 
 
