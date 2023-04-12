@@ -420,10 +420,13 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
 
      - Create GRANT for different columns for each ROLE:
           ```
-          GRANT select(tgldokjdi, sup_name,dept_name,group_kalbe,namacab) ON TABLE klb_rs.sales_consolidate TO ROLE supplier_1;
-          GRANT select(nodokjdi,city,tgldokjdi, sup_name,dept_name) ON TABLE klb_rs.sales_consolidate TO ROLE supplier_2;
+          GRANT select(tgldokjdi, sup_name,dept_name,group_kalbe,namacab) 
+          ON TABLE klb_rs.sales_consolidate TO ROLE supplier_1;
+          
+          GRANT select(nodokjdi,city,tgldokjdi, sup_name,dept_name) 
+          ON TABLE klb_rs.sales_consolidate TO ROLE supplier_2;
           ```
-     - Impersonate different users `alice` and `bob` who have different Row-Level Security
+     - Impersonate different users `alice` and `bob` who have different **Column-Level Security**
           ```
           SET SESSION AUTHORIZATION alice; 
           select * from klb_rs.sales_consolidate;
@@ -454,7 +457,7 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
 
           ALTER TABLE klb_rs.sales_consolidate row level security on;
           ```
-     - Impersonate different users `alice` and `bob` who have different Row-Level Security
+     - Impersonate different users `alice` and `bob` who have different **Row-Level Security**
           ```
           SET SESSION AUTHORIZATION alice;     
           SELECT * from klb_rs.sales_consolidate;
