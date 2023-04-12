@@ -440,10 +440,11 @@ Glue supports incremental load to **master table** based on the specific key. Fo
           - Select Redshift connection `redshift-cluster-connection-dev`
           - Select Schema `klb_rs`
           - Select table name `master_product`
-          - **Select `MERGE into target table`
+     - **Ensure to UPDATE existing keys and INSERT new rows**
+          - Select `MERGE into target table`
           - Select `kodeprod` as `matching keys`
           - When matched: `Update table with the data from source`
-          - When not matched: `Insert source data as a new row into table`**
+          - When not matched: `Insert source data as a new row into table`
      - Save job as `klb_sales_consolidate_s3_to_rs`
      - Click Job Details
           - Choose IAM Role `AnalyticsworkshopGlueRole`
