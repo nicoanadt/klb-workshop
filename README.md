@@ -407,20 +407,37 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
      CREATE ROLE supplier_1;
      CREATE ROLE supplier_2;
      
-     CREATE USER alice WITH PASSWORD `Awsuser123`;
-     CREATE USER bob WITH PASSWORD `Awsuser123`;
+     CREATE USER alice WITH PASSWORD 'Awsuser123';
+     CREATE USER bob WITH PASSWORD 'Awsuser123';
      
      GRANT ROLE supplier_1 to alice;
      GRANT ROLE supplier_2 to bob;
      
      GRANT usage on schema klb_rs TO ROLE supplier_1;
      GRANT usage on schema klb_rs TO ROLE supplier_2;
-     GRANT select ON TABLE klb_rs.sales_consolidate TO ROLE supplier_1;
-     GRANT select ON TABLE klb_rs.sales_consolidate TO ROLE supplier_2;
      ```
 2. Setup Column-level access control
-     ```
-     ```
+
+     - Create GRANT for different columns for each ROLE:
+          ```
+          GRANT select(tgldokjdi, sup_name,dept_name,group_kalbe,namacab) ON TABLE klb_rs.sales_consolidate TO ROLE supplier_1;
+          GRANT select(nodokjdi,city,tgldokjdi, sup_name,dept_name) ON TABLE klb_rs.sales_consolidate TO ROLE supplier_2;
+          ```
+     - Impersonate different users `alice` and `bob` who have different Row-Level Security
+          ```
+          SET SESSION AUTHORIZATION alice; 
+          select * from klb_rs.sales_consolidate;
+          
+          SET SESSION AUTHORIZATION bob; 
+          select * from klb_rs.sales_consolidate;
+          ```
+     - Once you're done, reset the session id so that you are back to the original user `awsuser`.
+     
+          ```
+          RESET SESSION AUTHORIZATION;
+          ALTER TABLE klb_rs.sales_consolidate ROW LEVEL SECURITY OFF;
+
+          ```
 3. Setup Row-based access control
      - Create row-level security (RLS):
           ```
