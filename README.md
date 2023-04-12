@@ -425,7 +425,7 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
      ```
      ALTER TABLE klb_rs.sales_consolidate row level security on;
 
-     CREATE RLS POLICY see_only_own_customer_rows
+     CREATE RLS POLICY supplier_policy
      WITH ( c_customer_id char(16) )
      USING ( c_customer_id = current_setting('app.customer_id', FALSE));
      ATTACH RLS POLICY see_only_own_customer_rows ON report.customer TO ROLE EXTERNAL;
