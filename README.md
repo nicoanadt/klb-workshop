@@ -404,7 +404,7 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
 ### Fine-grained Access Control in Redshift
 1. Configure users
      ```
-     CREATE role supplier_1;
+     CREATE ROLE supplier_1;
      CREATE ROLE supplier_2;
      
      CREATE USER alice WITH PASSWORD `Awsuser123`;
@@ -422,13 +422,38 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
      ```
      ```
 3. Setup Row-based access control
-     ```
-     ALTER TABLE klb_rs.sales_consolidate row level security on;
+     - Create row-level security (RLS):
+          ```
+          CREATE RLS POLICY policy_supplier_1
+          WITH ( sup_name varchar(16383) )
+          USING ( sup_name = 'PT. SANGHIANG PERKASA' );
 
-     CREATE RLS POLICY supplier_policy
-     WITH ( c_customer_id char(16) )
-     USING ( c_customer_id = current_setting('app.customer_id', FALSE));
-     ATTACH RLS POLICY see_only_own_customer_rows ON report.customer TO ROLE EXTERNAL;
+          CREATE RLS POLICY policy_supplier_2
+          WITH ( sup_name varchar(16383) )
+          USING ( sup_name = 'HEXPHARM' );
+
+          ATTACH RLS POLICY policy_supplier_1 ON klb_rs.sales_consolidate TO ROLE supplier_1;
+          ATTACH RLS POLICY policy_supplier_2 ON klb_rs.sales_consolidate TO ROLE supplier_2;
+
+          ALTER TABLE klb_rs.sales_consolidate row level security on;
+          ```
+     - Impersonate different users `alice` and `bob` who have different Row-Level Security
+          ```
+          SET SESSION AUTHORIZATION alice;     
+          SELECT * from klb_rs.sales_consolidate;
+          select count(*), sup_name from klb_rs.sales_consolidate group by sup_name;
+
+          SET SESSION AUTHORIZATION bob;     
+          SELECT * from klb_rs.sales_consolidate;
+          select count(*), sup_name from klb_rs.sales_consolidate group by sup_name;
+          ```
+     
+4. Once you're done, reset the session id so that you are back to the original user `awsuser`.
+     
+     ```
+     RESET SESSION AUTHORIZATION;
+     ALTER TABLE klb_rs.sales_consolidate ROW LEVEL SECURITY OFF;
+
      ```
 
 ## 8. Orchestrate Redshift Queries using Step Function
