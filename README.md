@@ -372,7 +372,7 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      ```
 5. Observe the result
 
-### Optimize your table
+### 7.2 Optimize your table
 
 The default redshift table has AUTO distribution style, AUTO sort key, and AUTO compression. These configurations are working for simple use cases but as your data grow you may want to specify specific values.
 
@@ -412,7 +412,7 @@ Query runtime is visible in the **lower right corner** of Redshift Query Editor 
      ```
 
 
-### Fine-grained Access Control in Redshift
+### 7.3 Fine-grained Access Control in Redshift
 1. Configure users
      ```
      CREATE ROLE supplier_1;
@@ -493,7 +493,7 @@ AWS Step Functions is a serverless orchestration service that lets you integrate
 
 Step Function is very low cost with 4000 state transition free tier per month, and for each 1000 state transitions only costs $0.025.
 
-### Allow Step Function IAM role for your role
+### 8.1 Allow Step Function IAM role for your role
 
 1. Open IAM console
 2. Click on **Roles**
@@ -525,7 +525,7 @@ Step Function is very low cost with 4000 state transition free tier per month, a
      - Definition of the step functions
      - What is being done in this workflow. It will trigger the redshift query using Redshift Data API, and check the execution status until it completes.
 
-### Create Step Function to orchestrate the end-to-end workflow
+### 8.2 Create Step Function to orchestrate the end-to-end workflow
 
 For this step we will create a workflow that will call the previous workflow as nested workflow.
 
@@ -555,5 +555,10 @@ For this step we will create a workflow that will call the previous workflow as 
 6. Click `Start Execution` to trigger the workflow
 7. Observe whether it is successfull or not.
 
-## Orchestrate Glue jobs using Step Function
+## 9. Orchestrate Glue jobs using Step Function
+
+It is also possible to use Step Function to orchestrate Glue jobs! You can try it on your own.
+
+
+
 
