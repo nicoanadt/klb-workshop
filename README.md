@@ -529,13 +529,13 @@ Glue supports incremental load to **master table** based on the specific key. Fo
 
      ```
 
-## 8. Orchestrate Redshift Queries using Step Function
+## 9. Orchestrate Redshift Queries using Step Function
 
 AWS Step Functions is a serverless orchestration service that lets you integrate AWS services to build business-critical applications. Step Functions is based on state machines and tasks. A state machine is a workflow. A task is a state in a workflow that represents a single unit of work that another AWS service performs. Each step in a workflow is a state.
 
 Step Function is very low cost with 4000 state transition free tier per month, and for each 1000 state transitions only costs $0.025.
 
-### 8.1 Allow Step Function IAM role for your role
+### 9.1 Allow Step Function IAM role for your role
 
 1. Open IAM console
 2. Click on **Roles**
@@ -545,7 +545,7 @@ Step Function is very low cost with 4000 state transition free tier per month, a
 6. Click on **Add Permissions**
 7. Verify the policy has been added.
 
-### 8.2 Create Step Function to run Redshift Query
+### 9.2 Create Step Function to run Redshift Query
 1. Open Step Function console page
 2. Navigate on the left side to open **State Machines**
 3. Click on **Create state machine**
@@ -567,7 +567,7 @@ Step Function is very low cost with 4000 state transition free tier per month, a
      - Definition of the step functions
      - What is being done in this workflow. It will trigger the redshift query using Redshift Data API, and check the execution status until it completes.
 
-### 8.3 Create Step Function to orchestrate the end-to-end workflow
+### 9.3 Create Step Function to orchestrate the end-to-end workflow
 
 For this step we will create a workflow that will call the previous workflow as nested workflow.
 
@@ -597,7 +597,7 @@ For this step we will create a workflow that will call the previous workflow as 
 6. Click `Start Execution` to trigger the workflow
 7. Observe whether it is successfull or not.
 
-## 9. Orchestrate Glue jobs using Step Function
+## 10. Orchestrate Glue jobs using Step Function
 
 It is also possible to use Step Function to orchestrate Glue jobs! You can try it on your own.
 
