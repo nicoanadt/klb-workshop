@@ -354,7 +354,7 @@ Step Function is very low cost with 4000 state transition free tier per month, a
 6. Click on **Add Permissions**
 7. Verify the policy has been added.
 
-### Create Step Function
+### Create Step Function to run Redshift Query
 1. Open Step Function console page
 2. Navigate on the left side to open **State Machines**
 3. Click on **Create state machine**
@@ -364,7 +364,33 @@ Step Function is very low cost with 4000 state transition free tier per month, a
      -  Step 3: Click **Next**
      -  Step 4: Specify settings
           - State machine name: `redshift-run-query-byparam`
-          - Permissions: Choose an existing role: `rolename`
+          - Permissions: `Create a new role`
+          - Click **Create state machine**
+     - Click on the IAM role that just been created (Edit role in IAM)
+4. In IAM Console for `StepFunctions-redshift-run-query-byparam-role-xxxxx`
+     - Click **Add Permissions** > **Attach policies**
+     - Select `AmazonRedshiftDataFullAccess` and `AWSGlueServiceRole`
+     - Click **Add Permissions**
+5. Back in Step Functions console page, observe what you have just create
+     - Definition of the step functions
+     - What is being done in this workflow. It will trigger the redshift query using Redshift Data API, and check the execution status until it completes.
+
+### Create Step Function to orchestrate the end-to-end workflow
+
+For this step we will create a workflow that will call the previous workflow.
+
+1. Open Step Function console page
+2. Navigate on the left side to open **State Machines**
+3. Click on **Create state machine**
+     -  Step 1: Choose `Standard` type
+     -  Step 2: Click on `Import/Export` then choose **Import definitions...**. 
+          -   Upload the following file: 
+          -   Update the configuration:
+               - StateMachineArn: `arn:aws:states:ap-southeast-1:[YOUR-ACCOUNT-NUMBER]:stateMachine:redshift-run-query-byparam`
+     -  Step 3: Click **Next**
+     -  Step 4: Specify settings
+          - State machine name: `redshift-run-query-byparam`
+          - Permissions: `Create a new role`
           - Click **Create state machine**
 
 ## Orchestrate Glue jobs using Step Function
