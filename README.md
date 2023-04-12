@@ -369,9 +369,10 @@ Step Function is very low cost with 4000 state transition free tier per month, a
      - Click on the IAM role that just been created (Edit role in IAM)
 4. In IAM Console for `StepFunctions-redshift-run-query-byparam-role-xxxxx`
      - Click **Add Permissions** > **Attach policies**
-     - Select `AmazonRedshiftDataFullAccess` and `AWSGlueServiceRole`
+     - Select `AmazonRedshiftDataFullAccess` , `AmazonRedshiftFullAccess` , `AWSGlueServiceRole` , `CloudWatchEventsFullAccess`, and `AWSStepFunctionsFullAccess`
      - Click **Add Permissions**
-5. Back in Step Functions console page, observe what you have just create
+5. Note down the ARN of the step function for referral by the next process 
+6. Back in Step Functions console page, observe what you have just create
      - Definition of the step functions
      - What is being done in this workflow. It will trigger the redshift query using Redshift Data API, and check the execution status until it completes.
 
@@ -387,6 +388,7 @@ For this step we will create a workflow that will call the previous workflow.
           -   Upload the following file: 
           -   Update the configuration:
                - StateMachineArn: `arn:aws:states:ap-southeast-1:[YOUR-ACCOUNT-NUMBER]:stateMachine:redshift-run-query-byparam`
+               - rsuser:
      -  Step 3: Click **Next**
      -  Step 4: Specify settings
           - State machine name: `redshift-run-query-byparam`
