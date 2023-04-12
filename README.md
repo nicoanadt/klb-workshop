@@ -236,7 +236,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 4. Create Redshift table from existing Glue Data Catalog table
 
    ```
-   create table klb_rs.sales_consolidate as select * from klb_spectrum.sales_consolidate_parquet where 1=2;
+   create table klb_rs.sales_consolidate (like klb_spectrum.sales_consolidate_parquet);
    ```
 
 6. Load data using Redshift Spectrum into Redshift internal table
@@ -267,7 +267,7 @@ The other option is to use COPY command to load data to Redshift natively. This 
 1. Create empty table based on the previous table that we have created.
 
      ```
-     create table klb_rs.sales_consolidate_copy as select * from klb_spectrum.sales_consolidate_parquet where 1=2;
+     create table klb_rs.sales_consolidate_copy (like klb_spectrum.sales_consolidate_parquet);
      ```
 
 2. Execute COPY command
