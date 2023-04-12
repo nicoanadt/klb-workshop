@@ -419,7 +419,37 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      - Number of workers
      - DPU hours : used for cost calculation
      
+### 7.3 Create Glue Job for loading into Redshift for incremental load of master tables
 
+Glue supports incremental load to **master table** based on the specific key. Follow the instructions below to create a job that will load into a master table.
+
+1. Open **ETL Jobs** page
+2. Choose **Visual with a source and target**
+3. Choose Source `AWS Glue Data Catalog` and Target `Amazon Redshift`
+4. Click **Create** on upper right
+5. Glue Studio Editor page is opened.
+     - Choose Data source 
+          - Database: `klb_db`
+          - Table: `Sales_consolidate`
+     - **Add new transformation by selecting the + button if required**
+          - Add `Select Fields` to choose specific column for this master table. 
+          - For example, `kodeprod`, `klasprod`, `prodname`, `namaklasprod`
+          - Add 'Drop Duplicate' to get distinct values only
+     - Choose Data target
+          - Choose **Direct data connection**
+          - Select Redshift connection `redshift-cluster-connection-dev`
+          - Select Schema `klb_rs`
+          - Select table name `master_product`
+          - **Select `MERGE into target table`
+          - Select `kodeprod` as `matching keys`
+          - When matched: `Update table with the data from source`
+          - When not matched: `Insert source data as a new row into table`**
+     - Save job as `klb_sales_consolidate_s3_to_rs`
+     - Click Job Details
+          - Choose IAM Role `AnalyticsworkshopGlueRole`
+          - Enable `Automatically scale the number of workers`
+     - Click **Save**
+     - Click **Run**
 
 
 ## 8. Fine-grained Access Control in Redshift
