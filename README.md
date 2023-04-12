@@ -1,4 +1,4 @@
-# Kalbe workshop
+# Kalbe AWS Analytics Workshop
 
 ## 1. Copy the sample data to your account
 
@@ -338,7 +338,7 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      - Number of workers
      - DPU hours : used for cost calculation
 
-## Orchestrate Redshift queries using Step Function
+## 7. Orchestrate Redshift queries using Step Function
 
 AWS Step Functions is a serverless orchestration service that lets you integrate AWS services to build business-critical applications. Step Functions is based on state machines and tasks. A state machine is a workflow. A task is a state in a workflow that represents a single unit of work that another AWS service performs. Each step in a workflow is a state.
 
