@@ -182,6 +182,23 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      ```
      CREATE SCHEMA klb;
      ```
+     
+### Create IAM role for Redshift Spectrum
+
+1. Open the IAM console.
+
+2. In the navigation pane, choose **Roles**.
+
+3. Choose **Create role**.
+
+4. Choose AWS service as the trusted entity, and then choose `Redshift` as the use case.
+
+5. Under Use case for other AWS services, choose `Redshift - Customizable` and then choose Next.
+
+6. The Add permissions policy page appears. Choose `AmazonS3ReadOnlyAccess` and `AWSGlueConsoleFullAccess`.
+7. For Role name, enter a name for your role, for example `myspectrum_role`.
+8. Review the information, and then choose **Create role**.
+9. In the navigation pane, choose **Roles**. Choose the name of your new role to view the summary, and then copy the Role ARN to your clipboard. This value is the Amazon Resource Name (ARN) for the role that you just created. You use that value when you create external tables to reference your data files on Amazon S3.
 
 
 ### Create external schema to use Redshift Spectrum
@@ -191,7 +208,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      - Using Redshift Spectrum to query into S3 data lake
      
      
-     In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the crawler object.
+     In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the glue crawler object.
 
 2. Create external schema in Redshift
 
@@ -199,7 +216,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      create external schema klb_spectrum 
      from data catalog 
      database 'klb_db' 
-     iam_role 'arn:aws:iam::130835040051:role/myspectrum_role';
+     iam_role 'arn:aws:iam::[YOUR-ACCOUNT-NUMBER]:role/myspectrum_role';
      ```
 
 3. Query to S3 data lake using Redshift Spectrum
@@ -217,7 +234,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 8. Observe the runtime of data load
      - Observe the performance
-     - Observe the total cost of data loading process
+     - Observe the total cost of data loading process based on data size
 
 
 
