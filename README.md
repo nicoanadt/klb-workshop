@@ -445,12 +445,13 @@ Glue supports incremental load to **master table** based on the specific key. Fo
           - Select `kodeprod` as `matching keys`
           - When matched: `Update table with the data from source`
           - When not matched: `Insert source data as a new row into table`
-     - Save job as `klb_sales_consolidate_s3_to_rs`
+     - Save job as `klb_load_master_product`
      - Click Job Details
           - Choose IAM Role `AnalyticsworkshopGlueRole`
           - Enable `Automatically scale the number of workers`
      - Click **Save**
      - Click **Run**
+ 6. The same method is also applicable for other master tables
 
 
 ## 8. Fine-grained Access Control in Redshift
