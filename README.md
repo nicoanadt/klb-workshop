@@ -220,8 +220,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 1. In Redshift, there are two ways of loading data from S3 to Redshift using Redshift features:
      - Using COPY command to load data from S3 files
      - Using Redshift Spectrum to query into S3 data lake
-     
-     
+          
      In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the glue crawler object.
 
 2. Create external schema in Redshift
@@ -237,13 +236,13 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 4. Create Redshift table from existing Glue Data Catalog table
 
    ```
-   create table klb.sales_consolidate as select * from klb_spectrum.sales_consolidate where 1=2;
+   create table klb_rs.sales_consolidate as select * from klb_spectrum.sales_consolidate_parquet where 1=2;
    ```
 
 6. Load data using Redshift Spectrum into Redshift internal table
 
      ```
-     insert into klb.sales_consolidate select * from klb_spectrum.sales_consolidate_parquet;
+     insert into klb_rs.sales_consolidate select * from klb_spectrum.sales_consolidate_parquet;
      ```
 
 8. Observe the runtime of data load
@@ -251,31 +250,34 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      - Observe the total cost of data loading process based on data size
 
           ```
-          SELECT s3_scanned_bytes
+          SELECT s3_scanned_bytes,*
           FROM SVL_S3QUERY_SUMMARY
-          WHERE query=<queryID>;
           ```
 
 ## 5. Load to Redshift using Redshift COPY command
 
-The other option is to use COPY command to load data to Redshift natively.
+The other option is to use COPY command to load data to Redshift natively. This method does not incur separate charges other than than the Redshift cluster itself.
 
 1. Create empty table based on the previous table that we have created.
 
      ```
-     create table klb.sales_consolidate_copy as select * from klb.sales_consolidate
+     create table klb_rs.sales_consolidate_copy as select * from klb_spectrum.sales_consolidate_parquet where 1=2;
      ```
 
 2. Execute COPY command
 
      ```
-     COPY klb.sales_consolidate_copy
+     COPY klb_rs.sales_consolidate_copy
      FROM 's3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/'
      iam_role 'arn:aws:iam::[YOUR-ACCOUNT-NUMBER]:role/myspectrum_role'
      FORMAT PARQUET FILLRECORD;
      ```
      
 3. Observe loaded table
+
+     ```
+     select * from klb_rs.sales_consolidate_copy
+     ```
 
 ## 6. Load to Redshift using Glue Studio
 
@@ -287,17 +289,17 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
 2. Click Create endpoint
      - Name tag - optional: `RedshiftS3EP`
      - Select AWS Services under Service category (which is the default selection)
-     - Under Service name search box, search for "s3" and hit enter/return.
+     - Under Service name search box, search for `s3` and hit enter/return.
      - `com.amazonaws.[region].s3` should come up as search result. Select this option with type as `Gateway`.
      - Under VPC, choose non-default VPC. This is the same VPC which was used for configuring redshift cluster.
           - If you have more than VPC listed in the drop down list, double check Redshift VPC to avoid any confusion. Do the following:
           - Go to: Redshift Console  
-          - Click on redshift cluster name
+          - Click on Redshift cluster name
           - Click on Properties tab.
           - Scroll down and check Network and security section for VPC name.
      - Once you have double checked VPC id, move to configuring Route tables section.
-     - Select the listed route tables (checklist both route table)
-3. Click Create endpoint. It should take a couple of seconds to provision this. Once this is ready, you should see Status as Available against the newly created S3 endpoint.
+     - Select the listed route tables (**check both route table**)
+3. Click **Create endpoint**. It should take a couple of seconds to provision this. Once this is ready, you should see Status as Available against the newly created S3 endpoint.
 
 ### Setup Glue Connection
 
@@ -311,7 +313,7 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      - Password `Awsuser123`
      - Click **Create Connection**
 
-### Create Glue Job
+### Create Glue Job for loading into Redshift
 1. Open **ETL Jobs** page
 2. Choose **Visual with a source and target**
 3. Choose Source `AWS Glue Data Catalog` and Target `Amazon Redshift`
@@ -336,6 +338,34 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
      - Number of workers
      - DPU hours : used for cost calculation
 
+## Orchestrate Redshift queries using Step Function
+
+AWS Step Functions is a serverless orchestration service that lets you integrate AWS services to build business-critical applications. Step Functions is based on state machines and tasks. A state machine is a workflow. A task is a state in a workflow that represents a single unit of work that another AWS service performs. Each step in a workflow is a state.
+
+Step Function is very low cost with 4000 state transition free tier per month, and for each 1000 state transitions only costs $0.025.
+
+### Allow Step Function IAM role for your role
+
+1. Open IAM console
+2. Click on **Roles**
+3. Search for `TeamRole` and click on the `TeamRole` name
+4. Click **Add Permissions** > **Attach Policies**
+5. Select `AWSStepFunctionsFullAccess`
+6. Click on **Add Permissions**
+7. Verify the policy has been added.
+
+### Create Step Function
+1. Open Step Function console page
+2. Navigate on the left side to open **State Machines**
+3. Click on **Create state machine**
+     -  Step 1: Choose `Standard` type
+     -  Step 2: Click on `Import/Export` then choose **Import definitions...**. 
+          -   Upload the following file: 
+     -  Step 3: Click **Next**
+     -  Step 4: Specify settings
+          - State machine name: `redshift-run-query-byparam`
+          - Permissions: Choose an existing role: `rolename`
+          - Click **Create state machine**
 
 ## Orchestrate Glue jobs using Step Function
-## Orchestrate Redshift queries using Step Function
+
