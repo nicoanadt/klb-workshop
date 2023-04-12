@@ -1,0 +1,88 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Generate Execution ID",
+  "States": {
+    "Generate Execution ID": {
+      "Type": "Pass",
+      "Next": "Parallel",
+      "Comment": "Unique execution ID based on date-hour is generated",
+      "Result": {
+        "rs_database": "dev",
+        "rs_user": "awsuser",
+        "rs_cluster_ident": "consumercluster-dbfd1libfuzz"
+      }
+    },
+    "Parallel": {
+      "Type": "Parallel",
+      "Next": "Create Datamart",
+      "Branches": [
+        {
+          "StartAt": "Repopulate Product Reference Table",
+          "States": {
+            "Repopulate Product Reference Table": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "StateMachineArn": "arn:aws:states:us-east-1:830206914382:stateMachine:redshift-run-query-byparam",
+                "Input": {
+                  "rs_database.$": "$.rs_database",
+                  "rs_sql_statement": "truncate table klb.distinct_product;insert into klb.distinct_product select distinct kodeprod,klasprod,prodname,namaklasprod from klb.sales_consolidate;",
+                  "rs_user.$": "$.rs_user",
+                  "rs_cluster_ident.$": "$.rs_cluster_ident",
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                }
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Repopulate Distributor Reference Table",
+          "States": {
+            "Repopulate Distributor Reference Table": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Repopulate Supplier Reference Table",
+          "States": {
+            "Repopulate Supplier Reference Table": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Repopulate Branch Reference Table",
+          "States": {
+            "Repopulate Branch Reference Table": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::states:startExecution.sync:2",
+              "Parameters": {
+                "StateMachineArn": "arn:aws:states:us-east-1:830206914382:stateMachine:redshift-run-query-byparam",
+                "Input": {
+                  "rs_database.$": "$.rs_database",
+                  "rs_sql_statement": "truncate table klb.distinct_branch;insert into klb.distinct_branch select distinct kodecab,namacab from klb.sales_consolidate;",
+                  "rs_user.$": "$.rs_user",
+                  "rs_cluster_ident.$": "$.rs_cluster_ident",
+                  "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
+                }
+              },
+              "End": true
+            }
+          }
+        }
+      ]
+    },
+    "Create Datamart": {
+      "Type": "Pass",
+      "Next": "Log Workflow Completion"
+    },
+    "Log Workflow Completion": {
+      "Type": "Pass",
+      "End": true
+    }
+  }
+}
