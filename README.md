@@ -392,24 +392,24 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
 
 2. Query into the new table (sorted). Compare the performance against the previous table. 
 
-Note: **First run of a query includes compilation process. Compare the performance using the second and subsequent runs only.**
+     Note: **First run of a query includes compilation process. Compare the performance using the second and subsequent runs only.**
 
-Query runtime is visible in the **lower right corner** of Redshift Query Editor v2.
+     Query runtime is visible in the **lower right corner** of Redshift Query Editor v2.
 
-     ```
-     -- Disable cache for this process
-     SET enable_result_cache_for_session TO OFF;
-     
-     -- Unsorted table
-     select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
-     from "klb_rs"."sales_consolidate" where tgldokjdi>'02/OCT/21 00:00:00' 
-     group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
-     
-     -- Sorted table
-     select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
-     from "klb_rs"."sales_consolidate_sorted" where tgldokjdi>'02/OCT/21 00:00:00' 
-     group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
-     ```
+          ```
+          -- Disable cache for this process
+          SET enable_result_cache_for_session TO OFF;
+
+          -- Unsorted table
+          select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
+          from "klb_rs"."sales_consolidate" where tgldokjdi>'02/OCT/21 00:00:00' 
+          group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
+
+          -- Sorted table
+          select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
+          from "klb_rs"."sales_consolidate_sorted" where tgldokjdi>'02/OCT/21 00:00:00' 
+          group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
+          ```
 
 
 ### 7.3 Fine-grained Access Control in Redshift
