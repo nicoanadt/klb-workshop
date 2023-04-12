@@ -202,6 +202,18 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 8. Review the information, and then choose **Create role**.
 9. In the navigation pane, choose **Roles**. Choose the name of your new role to view the summary, and then copy the Role ARN to your clipboard. This value is the Amazon Resource Name (ARN) for the role that you just created. You use that value when you create external tables to reference your data files on Amazon S3.
 
+### Associate IAM role with cluster
+
+1. Sign in to the AWS Management Console and open the Amazon Redshift console at https://console.aws.amazon.com/redshift/.
+
+2. On the navigation menu, choose Clusters, then choose the name of the cluster that you want to update (`consumercluster-xxxxxxxxx`)
+
+3. For **Actions**, choose **Manage IAM roles**. The IAM roles page appears.
+
+4. Choose `myspectrum_role` IAM role from the list. Then choose **Add IAM role** to add it to the list of Attached IAM roles.
+
+5. Choose **Done** to associate the IAM role with the cluster. The cluster is modified to complete the change.
+
 
 ### Create external schema to use Redshift Spectrum
 
