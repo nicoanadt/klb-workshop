@@ -9,7 +9,7 @@
       "Result": {
         "rs_database": "dev",
         "rs_user": "awsuser",
-        "rs_cluster_ident": "consumercluster-dbfd1libfuzz"
+        "rs_cluster_ident": "consumercluster-xxxxxxxxx"
       }
     },
     "Parallel": {
@@ -23,10 +23,10 @@
               "Type": "Task",
               "Resource": "arn:aws:states:::states:startExecution.sync:2",
               "Parameters": {
-                "StateMachineArn": "arn:aws:states:us-east-1:830206914382:stateMachine:redshift-run-query-byparam",
+                "StateMachineArn": "arn:aws:states:us-east-1:[ACCOUNT-NUMBER]:stateMachine:redshift-run-query-byparam",
                 "Input": {
                   "rs_database.$": "$.rs_database",
-                  "rs_sql_statement": "truncate table klb.distinct_product;insert into klb.distinct_product select distinct kodeprod,klasprod,prodname,namaklasprod from klb.sales_consolidate;",
+                  "rs_sql_statement": "begin transaction; create temp table master_product_tmp as select distinct kodeprod,klasprod,prodname,namaklasprod from klb_rs.sales_consolidate; delete from klb_rs.master_product using master_product_tmp where master_product_tmp.kodeprod = master_product.kodeprod; insert into klb_rs.master_product select * from master_product_tmp; end transaction;",
                   "rs_user.$": "$.rs_user",
                   "rs_cluster_ident.$": "$.rs_cluster_ident",
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
@@ -61,10 +61,10 @@
               "Type": "Task",
               "Resource": "arn:aws:states:::states:startExecution.sync:2",
               "Parameters": {
-                "StateMachineArn": "arn:aws:states:us-east-1:830206914382:stateMachine:redshift-run-query-byparam",
+                "StateMachineArn": "arn:aws:states:us-east-1:[ACCOUNT-NUMBER]:stateMachine:redshift-run-query-byparam",
                 "Input": {
                   "rs_database.$": "$.rs_database",
-                  "rs_sql_statement": "truncate table klb.distinct_branch;insert into klb.distinct_branch select distinct kodecab,namacab from klb.sales_consolidate;",
+                  "rs_sql_statement": "begin transaction; create temp table master_branch_tmp as select distinct kodecab,namacab from klb_rs.sales_consolidate; delete from klb_rs.master_branch using master_branch_tmp where master_branch_tmp.kodecab = master_branch.kodecab; insert into klb_rs.master_branch select * from master_branch_tmp; end transaction;",
                   "rs_user.$": "$.rs_user",
                   "rs_cluster_ident.$": "$.rs_cluster_ident",
                   "AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$": "$$.Execution.Id"
