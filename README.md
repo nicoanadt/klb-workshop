@@ -335,25 +335,25 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
 
      Query runtime is visible in the **lower right corner** of Redshift Query Editor v2.
 
-          ```
-          -- Disable cache for this process
-          SET enable_result_cache_for_session TO OFF;
+     ```
+     -- Disable cache for this process
+     SET enable_result_cache_for_session TO OFF;
 
-          -- Unsorted table
-          select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
-          from "klb_rs"."sales_consolidate" where tgldokjdi>'02/OCT/21 00:00:00' 
-          group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
+     -- Unsorted table
+     select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
+     from "klb_rs"."sales_consolidate" where tgldokjdi>'02/OCT/21 00:00:00' 
+     group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
 
-          -- Sorted table
-          select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
-          from "klb_rs"."sales_consolidate_sorted" where tgldokjdi>'02/OCT/21 00:00:00' 
-          group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
-          ```
+     -- Sorted table
+     select tgldokjdi, sup_name, city, count(*) cnt, sum(tot1) sum_tot1, sum(banyak) sum_banyak 
+     from "klb_rs"."sales_consolidate_sorted" where tgldokjdi>'02/OCT/21 00:00:00' 
+     group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
+     ```
 3. Once you're done, reset the cache back on again.
-          ```
-          -- Disable cache for this process
-          SET enable_result_cache_for_session TO ON;
-          ```
+     ```
+     -- Disable cache for this process
+     SET enable_result_cache_for_session TO ON;
+     ```
 
 
 ## 7. Load to Redshift using Glue Studio (Option 3)
