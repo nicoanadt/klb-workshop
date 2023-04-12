@@ -166,16 +166,18 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      - On the left-hand side, click on the Redshift environment you want to connect to.
      ![](https://static.us-east-1.prod.workshops.aws/public/36b90137-7dd0-42c6-b8f2-000e56e508fc/static/images/lab1/ConnectionV2.png)
 2. Connect to `consumercluster-xxxxxx`
-     - Enter the Database name and user name. Click connect. These credentials should be used for both the Serverless endpoint (workgroup-xxxxxxx) as well as the provisioned cluster (consumercluster-xxxxxxxxxx).
+     - Enter the Database name and user name. Click connect. These credentials should be used for both the Serverless endpoint (workgroup-xxxxxxx) as well as the provisioned cluster (consumercluster-xxxxxxxxxx). 
+     - **For this exercise, use the provisioned cluster (consumercluster-xxxxxxxxxx)**
      ```
-     Username `awsuser`
-     Password `Awsuser123`
+     Username: awsuser
+     Password: Awsuser123
      ```
 3. Select a sample query. If it is successful, congrats! You are now connected to Redshift
 
      ```
      select * from pg_user;
      ```
+     ![](https://static.us-east-1.prod.workshops.aws/public/36b90137-7dd0-42c6-b8f2-000e56e508fc/static/images/lab1/Users.png)
 
 4.  Create schema
 
@@ -236,9 +238,34 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      - Observe the performance
      - Observe the total cost of data loading process based on data size
 
+          ```
+          SELECT s3_scanned_bytes
+          FROM SVL_S3QUERY_SUMMARY
+          WHERE query=<queryID>;
+          ```
 
+## 5. Load to Redshift using Redshift COPY command
 
-## 5. Load to Redshift using Glue Studio
+The other option is to use COPY command to load data to Redshift natively.
+
+1. Create empty table based on the previous table that we have created.
+
+     ```
+     create table klb.sales_consolidate_copy as select * from klb.sales_consolidate
+     ```
+
+2. Execute COPY command
+
+     ```
+     COPY klb.sales_consolidate_copy
+     FROM 's3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/'
+     iam_role 'arn:aws:iam::[YOUR-ACCOUNT-NUMBER]:role/myspectrum_role'
+     FORMAT PARQUET FILLRECORD;
+     ```
+     
+3. Observe loaded table
+
+## 6. Load to Redshift using Glue Studio
 
 ### Setup S3 Gateway Endpoint in VPC
 
