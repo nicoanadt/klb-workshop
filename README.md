@@ -157,7 +157,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
      - Compare the total filesize of csv file vs parquet
 
 
-## 4. Load to Redshift using Redshift Spectrum
+## 4. Load to Redshift using Redshift Spectrum (Option 1)
 
 ### Query in Redshift
 
@@ -254,7 +254,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
           FROM SVL_S3QUERY_SUMMARY
           ```
 
-## 5. Load to Redshift using Redshift COPY command
+## 5. Load to Redshift using Redshift COPY command (Option 2)
 
 The other option is to use COPY command to load data to Redshift natively. This method does not incur separate charges other than than the Redshift cluster itself.
 
@@ -279,7 +279,7 @@ The other option is to use COPY command to load data to Redshift natively. This 
      select * from klb_rs.sales_consolidate_copy
      ```
 
-## 6. Load to Redshift using Glue Studio
+## 6. Load to Redshift using Glue Studio (Option 3)
 
 ### Setup S3 Gateway Endpoint in VPC
 
