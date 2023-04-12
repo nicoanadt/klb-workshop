@@ -288,91 +288,30 @@ The other option is to use COPY command to load data to Redshift natively. This 
      SELECT count(*) from klb_rs.sales_consolidate;
      ```
 
-## 6. Load to Redshift using Glue Studio (Option 3)
+## 6. Run Queries in Redshift
 
-In this option we are going to explore AWS Glue as data ingestion tools to load data into Redshift
-
-### 6.1 Setup S3 Gateway Endpoint in VPC
-
-In this step, we will create S3 Gateway Endpoint so that Redshift cluster can communicate with S3 using its private IP.
-
-1. Go to: **AWS VPC Console**
-2. Click Create endpoint
-     - Name tag - optional: `RedshiftS3EP`
-     - Select AWS Services under Service category (which is the default selection)
-     - Under Service name search box, search for `s3` and hit enter/return.
-     - `com.amazonaws.[region].s3` should come up as search result. Select this option with type as `Gateway`.
-     - Under VPC, choose non-default VPC. This is the same VPC which was used for configuring redshift cluster.
-          - If you have more than VPC listed in the drop down list, double check Redshift VPC to avoid any confusion. Do the following:
-          - Go to: Redshift Console  
-          - Click on Redshift cluster name
-          - Click on Properties tab.
-          - Scroll down and check Network and security section for VPC name.
-     - Once you have double checked VPC id, move to configuring Route tables section.
-     - Select the listed route tables (**check both route table**)
-3. Click **Create endpoint**. It should take a couple of seconds to provision this. Once this is ready, you should see Status as Available against the newly created S3 endpoint.
-
-### 6.2 Setup Glue Connection
-
-1. Open AWS Glue page
-2. Open `Data Connections page, create connection in Glue by clicking **Create Connection**
-     - Enter connection name `redshift-cluster-connection-dev`
-     - Choose connection type `Redshift`
-     - Choose Database instances `consumercluster-xxxxxxx`
-     - Database name `dev`
-     - Username `awsuser`
-     - Password `Awsuser123`
-     - Click **Create Connection**
-
-### 6.3 Create Glue Job for loading into Redshift
-1. Open **ETL Jobs** page
-2. Choose **Visual with a source and target**
-3. Choose Source `AWS Glue Data Catalog` and Target `Amazon Redshift`
-4. Click **Create** on upper right
-5. Glue Studio Editor page is opened.
-     - Choose Data source 
-          - Database: `klb_db`
-          - Table: `Sales_consolidate`
-     - Choose Data target
-          - Choose **Direct data connection**
-          - Select Redshift connection `redshift-cluster-connection-dev`
-          - Select Schema `klb_rs`
-          - Select new table name `sales_consolidate_rs`
-     - Save job as `klb_sales_consolidate_s3_to_rs`
-     - Click Job Details
-          - Choose IAM Role `AnalyticsworkshopGlueRole`
-          - Enable `Automatically scale the number of workers`
-     - Click **Save**
-     - Click **Run**
-6. Once the job is finished, note down the:
-     - Execution runtime
-     - Number of workers
-     - DPU hours : used for cost calculation
-     
-## 7. Run Analytics Queries in Redshift
-
-### 7.1 Create master tables
+### 6.1 Create master tables
 1. Open **Redshift Query Editor v2**
 2. Run the following queries:
 3. Create master tables
      - Create master supplier table
           ```
+          create table klb_rs.master_supplier as
+          select distinct sup_name,namasup,group_supplier from klb_rs.sales_consolidate;
           ```
      - Create master product table
           ```
+          create table klb_rs.master_product as
+          select distinct kodeprod,klasprod,prodname,namaklasprod from klb_rs.sales_consolidate;
           ```
      - Create master branch table
           ```
+          create table klb_rs.master_branch as
+          select distinct kodecab,namacab from klb_rs.sales_consolidate;
           ```
-     - Create master distributor table
-          ```
-          ```
-4. Perform aggregation query
-     ```
-     ```
-5. Observe the result
 
-### 7.2 Optimize your table
+
+### 6.2 Run Analytics Query and Optimize your table
 
 The default redshift table has AUTO distribution style, AUTO sort key, and AUTO compression. These configurations are working for simple use cases but as your data grow you may want to specify specific values.
 
@@ -410,14 +349,80 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
           from "klb_rs"."sales_consolidate_sorted" where tgldokjdi>'02/OCT/21 00:00:00' 
           group by tgldokjdi, sup_name, city order by tgldokjdi, sup_name, city;
           ```
-3. Once you're done, reset the cache to improve performance.
+3. Once you're done, reset the cache back on again.
           ```
           -- Disable cache for this process
           SET enable_result_cache_for_session TO ON;
           ```
 
 
-### 7.3 Fine-grained Access Control in Redshift
+## 7. Load to Redshift using Glue Studio (Option 3)
+
+In this option we are going to explore AWS Glue as data ingestion tools to load data into Redshift
+
+### 7.1 Setup S3 Gateway Endpoint in VPC
+
+In this step, we will create S3 Gateway Endpoint so that Redshift cluster can communicate with S3 using its private IP.
+
+1. Go to: **AWS VPC Console**
+2. Click Create endpoint
+     - Name tag - optional: `RedshiftS3EP`
+     - Select AWS Services under Service category (which is the default selection)
+     - Under Service name search box, search for `s3` and hit enter/return.
+     - `com.amazonaws.[region].s3` should come up as search result. Select this option with type as `Gateway`.
+     - Under VPC, choose non-default VPC. This is the same VPC which was used for configuring redshift cluster.
+          - If you have more than VPC listed in the drop down list, double check Redshift VPC to avoid any confusion. Do the following:
+          - Go to: Redshift Console  
+          - Click on Redshift cluster name
+          - Click on Properties tab.
+          - Scroll down and check Network and security section for VPC name.
+     - Once you have double checked VPC id, move to configuring Route tables section.
+     - Select the listed route tables (**check both route table**)
+3. Click **Create endpoint**. It should take a couple of seconds to provision this. Once this is ready, you should see Status as Available against the newly created S3 endpoint.
+
+### 7.2 Setup Glue Connection
+
+1. Open AWS Glue page
+2. Open `Data Connections` page, create connection in Glue by clicking **Create Connection**
+     - Enter connection name `redshift-cluster-connection-dev`
+     - Choose connection type `Redshift`
+     - Choose Database instances `consumercluster-xxxxxxx`
+     - Database name `dev`
+     - Username `awsuser`
+     - Password `Awsuser123`
+     - Click **Create Connection**
+
+### 7.3 Create Glue Job for loading into Redshift
+1. Open **ETL Jobs** page
+2. Choose **Visual with a source and target**
+3. Choose Source `AWS Glue Data Catalog` and Target `Amazon Redshift`
+4. Click **Create** on upper right
+5. Glue Studio Editor page is opened.
+     - Choose Data source 
+          - Database: `klb_db`
+          - Table: `Sales_consolidate`
+     - Add new transformation by selecting the + button if required
+          - For example, add `Select Fields` to choose specific column
+     - Choose Data target
+          - Choose **Direct data connection**
+          - Select Redshift connection `redshift-cluster-connection-dev`
+          - Select Schema `klb_rs`
+          - Select new table name `sales_consolidate_glue`
+     - Save job as `klb_sales_consolidate_s3_to_rs`
+     - Click Job Details
+          - Choose IAM Role `AnalyticsworkshopGlueRole`
+          - Enable `Automatically scale the number of workers`
+     - Click **Save**
+     - Click **Run**
+6. Once the job is finished, note down the:
+     - Execution runtime
+     - Number of workers
+     - DPU hours : used for cost calculation
+     
+
+
+
+## 8. Fine-grained Access Control in Redshift
 1. Configure users
      ```
      CREATE ROLE supplier_1;
@@ -508,7 +513,7 @@ Step Function is very low cost with 4000 state transition free tier per month, a
 6. Click on **Add Permissions**
 7. Verify the policy has been added.
 
-### Create Step Function to run Redshift Query
+### 8.2 Create Step Function to run Redshift Query
 1. Open Step Function console page
 2. Navigate on the left side to open **State Machines**
 3. Click on **Create state machine**
@@ -530,7 +535,7 @@ Step Function is very low cost with 4000 state transition free tier per month, a
      - Definition of the step functions
      - What is being done in this workflow. It will trigger the redshift query using Redshift Data API, and check the execution status until it completes.
 
-### 8.2 Create Step Function to orchestrate the end-to-end workflow
+### 8.3 Create Step Function to orchestrate the end-to-end workflow
 
 For this step we will create a workflow that will call the previous workflow as nested workflow.
 
