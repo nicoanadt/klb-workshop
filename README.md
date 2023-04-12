@@ -386,9 +386,17 @@ For this step we will create a workflow that will call the previous workflow.
      -  Step 1: Choose `Standard` type
      -  Step 2: Click on `Import/Export` then choose **Import definitions...**. 
           -   Upload the following file: [redshift-run-ELT-workflow](https://raw.githubusercontent.com/nicoanadt/klb-workshop/b19882a1241c6b211c165d4222245168a711dd96/step-functions/redshift-run-ELT-workflow.asl.json)
-          -   Update the configuration:
+          -   Update the configuration in `Generate Execution ID and Parameter` state:               
+               - Click on `Output`, Add the following parameters
+               ```
+               {
+                 "rs_database": "dev",
+                 "rs_user": "awsuser",
+                 "rs_cluster_ident": "consumercluster-dbfd1libfuzz"
+               }
+               ```
+          - Update state machine ARN for Repopulate
                - StateMachineArn: `arn:aws:states:ap-southeast-1:[YOUR-ACCOUNT-NUMBER]:stateMachine:redshift-run-query-byparam`
-               - rsuser:
      -  Step 3: Click **Next**
      -  Step 4: Specify settings
           - State machine name: `redshift-run-query-byparam`
