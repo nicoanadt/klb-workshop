@@ -403,8 +403,33 @@ The default redshift table has AUTO distribution style, AUTO sort key, and AUTO 
 
 ### Fine-grained Access Control in Redshift
 1. Configure users
+     ```
+     CREATE role supplier_1;
+     CREATE ROLE supplier_2;
+     
+     CREATE USER alice WITH PASSWORD `Awsuser123`;
+     CREATE USER bob WITH PASSWORD `Awsuser123`;
+     
+     GRANT ROLE supplier_1 to alice;
+     GRANT ROLE supplier_2 to bob;
+     
+     GRANT usage on schema klb_rs TO ROLE supplier_1;
+     GRANT usage on schema klb_rs TO ROLE supplier_2;
+     GRANT select ON TABLE klb_rs.sales_consolidate TO ROLE supplier_1;
+     GRANT select ON TABLE klb_rs.sales_consolidate TO ROLE supplier_2;
+     ```
 2. Setup Column-level access control
+     ```
+     ```
 3. Setup Row-based access control
+     ```
+     ALTER TABLE klb_rs.sales_consolidate row level security on;
+
+     CREATE RLS POLICY see_only_own_customer_rows
+     WITH ( c_customer_id char(16) )
+     USING ( c_customer_id = current_setting('app.customer_id', FALSE));
+     ATTACH RLS POLICY see_only_own_customer_rows ON report.customer TO ROLE EXTERNAL;
+     ```
 
 ## 8. Orchestrate Redshift Queries using Step Function
 
