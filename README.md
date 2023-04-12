@@ -551,7 +551,7 @@ Step Function is very low cost with 4000 state transition free tier per month, a
 3. Click on **Create state machine**
      -  Step 1: Choose `Standard` type
      -  Step 2: Click on `Import/Export` then choose **Import definitions...**. 
-          -   Upload the following file: [redshift-run-query-byparam.asl.json](https://raw.githubusercontent.com/nicoanadt/klb-workshop/b19882a1241c6b211c165d4222245168a711dd96/step-functions/redshift-run-query-byparam.asl.json)
+          -   Upload the following file: [redshift-run-query-byparam.asl.json](https://raw.githubusercontent.com/nicoanadt/klb-workshop/main/step-functions/redshift-run-query-byparam.asl.json)
      -  Step 3: Click **Next**
      -  Step 4: Specify settings
           - State machine name: `redshift-run-query-byparam`
@@ -576,7 +576,7 @@ For this step we will create a workflow that will call the previous workflow as 
 3. Click on **Create state machine**
      -  Step 1: Choose `Standard` type
      -  Step 2: Click on `Import/Export` then choose **Import definitions...**. 
-          -   Upload the following file: [redshift-run-ELT-workflow](https://raw.githubusercontent.com/nicoanadt/klb-workshop/b19882a1241c6b211c165d4222245168a711dd96/step-functions/redshift-run-ELT-workflow.asl.json)
+          -   Upload the following file: [redshift-run-ELT-workflow](https://raw.githubusercontent.com/nicoanadt/klb-workshop/main/step-functions/redshift-run-ELT-workflow.asl.json)
           -   Update the configuration in `Generate Execution ID and Parameter` state:               
                - Click on `Output`, Add the following parameters based on the information of **your** Redshift cluster
                ```
