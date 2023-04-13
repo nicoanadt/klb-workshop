@@ -71,10 +71,10 @@ Welcome to the AWS Analytics Workshop. This workshop will go through multiple se
 
 5. Click on the `CloudShell` button in the lower left side of the screen
 
-6. Copy all partitions inside `s3://kalbe-workshop-test-130835040051-use1/data/sales_consolidate/` to your bucket folder:  `s3:/[BUCKETNAME]/data/raw/sales_consolidate/` by running this command in CloudShell
+6. Copy all partitions inside `s3://kalbe-workshop-test-130835040051-use1/data/sales_consolidate/` to your bucket folder:  `s3:/[BUCKETNAME]/data/raw/sales_consolidate/` by running this command in CloudShell. Adjust the `BUCKET-NAME` based as needed.
 
      ```
-     aws s3 cp s3://kalbe-workshop-test-130835040051-use1/data/sales_consolidate/ s3://nic-analytics-workshop-bucket/data/raw/sales_consolidate/ --acl bucket-owner-full-control --region us-east-1 --recursive
+     aws s3 cp s3://kalbe-workshop-test-130835040051-use1/data/sales_consolidate/ s3://[BUCKET-NAME]/data/raw/sales_consolidate/ --acl bucket-owner-full-control --region us-east-1 --recursive
      ```
 7. Observe until all data has been completed and verify in your S3 bucket
     
