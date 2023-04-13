@@ -1,8 +1,12 @@
 # Kalbe AWS Analytics Workshop
 
+Welcome to the AWS Analytics Workshop. This workshop will go through multiple services of AWS to help you understand how AWS Analytics services can help you resolve your analytics needs.
+
 ## 1. Copy the sample data to your account
 
 ### 1.1 Allow S3 Access
+
+Open Amazon S3 console page.
 
 1. Create S3 bucket
 
