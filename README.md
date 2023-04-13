@@ -96,19 +96,19 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 
 ### 2.2 Create Crawler
 
-1. Open AWS Glue page
-2. Click on **Crawlers** > **Create Crawler**
+1. Open **AWS Glue** page
+2. Click on **Data Catalog** > **Crawlers** > **Create Crawler**
      - Crawler info
           - Crawler name: `AnalyticsworkshopCrawler`
      - Click Next
-     - Click Add a data source
-          Choose a Data source:
+     - Click **Add a data source**
+          - Choose a Data source:
           - Data source: `S3`
      - Leave Network connection - optional as-is
-     - Select In this account under Location of S3 data
-          - Include S3 path: `s3://yourname-analytics-workshop-bucket/data/raw/sales_consolidate/`
-          - Leave Subsequent crawler runs to default selection of Crawl all sub-folders
-          - Click Add an S3 data source
+     - Select `In this account` then:
+          - Include **S3 path**: `s3://yourname-analytics-workshop-bucket/data/raw/sales_consolidate/`
+          - Leave Subsequent crawler runs to default selection,  `Crawl all sub-folders`
+          - Click `Add an S3 data source`
           - Select recently added S3 data source under Data Sources
      - Click Next
      - IAM Role
@@ -116,15 +116,15 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
           - Leave everything else as-is.
      - Click Next
      - Output configuration:
-          - Click Add database to bring up a new window for creating a database.
-          - Database details
-          - Name: `klb_db`
-          - Click Create database
-          - Closes the current window and returns to the previous window.
+          - Click `Add database` to bring up a new window for creating a database.
+               - Database details
+               - Name: `klb_db`
+               - Click Create database
+               - Close the current window and returns to the previous window.
           - Refresh by clicking the refresh icon to the right of the Target database
           - Choose `klb_db` under Target database
           - Click **Advanced options**
-          - Checklist `Update all new and existing partitions with metadata from the table`
+               - Checklist `Update all new and existing partitions with metadata from the table`
      - Under Crawler schedule
           - Frequency: `On demand`
           - Click Next
