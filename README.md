@@ -67,7 +67,7 @@ Welcome to the AWS Analytics Workshop. This workshop will go through multiple se
          - Search for `AWSStepFunctionsFullAccess` then click `Add permissions`
     
     
-4. Open the following link in new tab to view the data source that we are going to use : https://s3.console.aws.amazon.com/s3/buckets/kalbe-workshop-test-130835040051-use1?region=us-east-1&prefix=data/sales_consolidate/&showversions=false
+4. Open the following link in new tab to view the data source that we are going to use : https://s3.console.aws.amazon.com/s3/buckets/kalbe-workshop-test-130835040051-use1?region=us-east-1&prefix=data/sales_consolidate_new/&showversions=false
 
 5. Click on the `CloudShell` button in the lower left side of the screen
 
