@@ -21,51 +21,59 @@ Welcome to the AWS Analytics Workshop. This workshop will go through multiple se
     `s3:/[BUCKETNAME]/data/raw/sales_consolidate/`
     
 
-3. Create inline policy for `TeamRole` role in your account
+3. Allow your role `TeamRole` to copy data from source data owner by adding new policies:
 
-    Open `IAM` console page.
+    - Open `IAM` console page.
     
-    Click on `Role` > Search for `TeamRole` > Open `TeamRole`
+    - Click on `Role` > Search for `TeamRole` > Open `TeamRole`
     
-    In TeamRole page, click `Add permissions` > `Create Inline Policy`
+    - In TeamRole page, click `Add permissions` > `Create Inline Policy`
     
-    Create new inline policy:
-  
-    ```
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "s3:GetObject",
-                    "s3:GetObjectAcl",
-                    "s3:GetObjectVersion",
-                    "s3:GetObjectVersionAcl",
-                    "s3:GetObjectVersionTagging",
-                    "s3:PutObject",
-                    "s3:PutObjectAcl",
-                    "s3:PutObjectVersionAcl",
-                    "s3:ListBucket",
-                    "S3:GetObjectTagging",
-                    "S3:PutObjectTagging"
-                ],
-                "Resource": [
-                    "arn:aws:s3:::kalbe-workshop-test-130835040051-apse1",
-                    "arn:aws:s3:::kalbe-workshop-test-130835040051-apse1/*"
-                ]
-            }
-        ]
-    }
-    ```
-    
-    Click `Review policy` > Set a name `kalbe-data-access` > Click `Create Policy`
+         - Create new inline policy:
 
-4. Open the following link in new tab : https://s3.console.aws.amazon.com/s3/buckets/kalbe-workshop-test-130835040051-apse1?region=ap-southeast-1&prefix=data/sales_consolidate/&showversions=false 
+         ```
+         {
+             "Version": "2012-10-17",
+             "Statement": [
+                 {
+                     "Effect": "Allow",
+                     "Action": [
+                         "s3:GetObject",
+                         "s3:GetObjectAcl",
+                         "s3:GetObjectVersion",
+                         "s3:GetObjectVersionAcl",
+                         "s3:GetObjectVersionTagging",
+                         "s3:PutObject",
+                         "s3:PutObjectAcl",
+                         "s3:PutObjectVersionAcl",
+                         "s3:ListBucket",
+                         "S3:GetObjectTagging",
+                         "S3:PutObjectTagging"
+                     ],
+                     "Resource": [
+                         "arn:aws:s3:::kalbe-workshop-test-130835040051-apse1",
+                         "arn:aws:s3:::kalbe-workshop-test-130835040051-apse1/*"
+                     ]
+                 }
+             ]
+         }
+         ```
+         - Click `Review policy` > Set a name `kalbe-data-access` > Click `Create Policy`
+    
+    - In TeamRole page, click `Add permissions` > `Attach Policies`
+         - Search for `AWSCloudShellFullAccess` then click `Add permissions`
+    
+    
+4. Open the following link in new tab to view the data source that we are going to use : https://s3.console.aws.amazon.com/s3/buckets/kalbe-workshop-test-130835040051-use1?region=us-east-1&prefix=data/sales_consolidate/&showversions=false
 
-5. Copy all partitions inside `s3://kalbe-workshop-test-130835040051-apse1/data/sales_consolidate/` to your bucket folder:
+5. Click on the `CloudShell` button in the lower left side of the screen
 
-    `s3:/[BUCKETNAME]/data/raw/sales_consolidate/`
+6. Copy all partitions inside `s3://kalbe-workshop-test-130835040051-use1/data/sales_consolidate/` to your bucket folder:  `s3:/[BUCKETNAME]/data/raw/sales_consolidate/` by running this command in CloudShell
+
+     ```
+     aws s3 cp s3://kalbe-workshop-test-130835040051-use1/data/sales_consolidate/ s3://nic-analytics-workshop-bucket/data/raw/sales_consolidate/ --acl bucket-owner-full-control --region us-east-1 --recursive
+     ```
+7. Observe until all data has been completed and verify in your S3 bucket
     
 ## 2. Run Glue Crawler to load data to Glue Data Catalog
 
