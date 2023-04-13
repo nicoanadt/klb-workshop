@@ -176,8 +176,8 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
 ## 4. Load to Redshift using Redshift Spectrum (Option 1)
 
 In Redshift, there are two ways of loading data from S3 to Redshift using Redshift features:
-     - Using COPY command to load data from S3 files
-     - Using Redshift Spectrum to query into S3 data lake
+- Using COPY command to load data from S3 files
+- Using Redshift Spectrum to query into S3 data lake
           
 In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the glue crawler object.
 
