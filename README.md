@@ -234,14 +234,15 @@ In this exercise we will explore Redshift Spectrum to automatically create the t
 
 3. For **Actions**, choose **Manage IAM roles**. The IAM roles page appears.
 
-4. Choose `myspectrum_role` IAM role from the list. Then choose **Add IAM role** to add it to the list of Attached IAM roles.
+4. Choose `myspectrum_role` IAM role from the list. Then choose **Associate IAM role** to add it to the list of Attached IAM roles.
 
-5. Choose **Done** to associate the IAM role with the cluster. The cluster is modified to complete the change.
+5. Choose **Save changes** to associate the IAM role with the cluster. The cluster is modified to complete the change.
 
 
 ### 4.4 Create external schema to use Redshift Spectrum
 
-1. Create external schema in Redshift
+1. Open **Redshift Query Editor v2**
+2.  Create external schema in Redshift
 
      ```
      create external schema klb_spectrum 
@@ -250,20 +251,25 @@ In this exercise we will explore Redshift Spectrum to automatically create the t
      iam_role 'arn:aws:iam::[YOUR-ACCOUNT-NUMBER]:role/myspectrum_role';
      ```
 
-2. Query to S3 data lake using Redshift Spectrum
-3. Create Redshift table from existing Glue Data Catalog table
+3. Query to S3 data lake using Redshift Spectrum
+
+   ```
+   select * from klb_spectrum.sales_consolidate_parquet;
+   ```
+
+4. Create Redshift table from existing Glue Data Catalog table
 
    ```
    create table klb_rs.sales_consolidate (like klb_spectrum.sales_consolidate_parquet);
    ```
 
-4. Load data using Redshift Spectrum into Redshift internal table
+5. Load data using Redshift Spectrum into Redshift internal table
 
      ```
      insert into klb_rs.sales_consolidate select * from klb_spectrum.sales_consolidate_parquet;
      ```
 
-5. Observe the runtime of data load
+6. Observe the runtime of data load
      - Observe the performance
      - Observe the rowcount
      
