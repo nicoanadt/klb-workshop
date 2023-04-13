@@ -1,6 +1,6 @@
 # Kalbe AWS Analytics Workshop
 
-Welcome to the AWS Analytics Workshop. This workshop will go through multiple services of AWS to help you understand how AWS Analytics services can help you resolve your analytics needs.
+Welcome to the AWS Analytics Workshop. This workshop will go through multiple services of AWS to help you understand how AWS Analytics services can cover your technical and business needs.
 
 ![](https://raw.githubusercontent.com/nicoanadt/klb-workshop/main/step-functions/klb-arch-workshop.png)
 
