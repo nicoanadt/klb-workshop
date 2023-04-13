@@ -183,18 +183,20 @@ In this exercise we will explore Redshift Spectrum to automatically create the t
 
 ### 4.1 Query in Redshift
 
-1. **Open Redshift Query Editor v2**
-     - If prompted, you may need to configure the Query Editor.
+1. Open the **Amazon Redshift** console
+
+2. **Open Redshift Query Editor v2** from the left menu.
+     - If prompted, you may need to configure the Query Editor. Click on `Configure Account`
      - On the left-hand side, click on the Redshift environment you want to connect to.
      ![](https://static.us-east-1.prod.workshops.aws/public/36b90137-7dd0-42c6-b8f2-000e56e508fc/static/images/lab1/ConnectionV2.png)
-2. Connect to `consumercluster-xxxxxx`
+3. Connect to `consumercluster-xxxxxx`
      - Enter the Database name and user name. Click connect. These credentials should be used for both the Serverless endpoint (workgroup-xxxxxxx) as well as the provisioned cluster (consumercluster-xxxxxxxxxx). 
      - **For this exercise, use the provisioned cluster (consumercluster-xxxxxxxxxx)**
      ```
      Username: awsuser
      Password: Awsuser123
      ```
-3. Select a sample query. If it is successful, congrats! You are now connected to Redshift
+4. Select a sample query. If it is successful, congrats! You are now connected to Redshift
 
      ```
      select * from pg_user;
@@ -226,7 +228,7 @@ In this exercise we will explore Redshift Spectrum to automatically create the t
 
 ### 4.3 Associate IAM role with cluster
 
-1. Sign in to the AWS Management Console and open the Amazon Redshift console at https://console.aws.amazon.com/redshift/.
+1. Open **Amazon Redshift** console page 
 
 2. On the navigation menu, choose Clusters, then choose the name of the cluster that you want to update (`consumercluster-xxxxxxxxx`)
 
