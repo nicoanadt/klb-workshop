@@ -164,7 +164,7 @@ In this step we will navigate to the IAM Console and create a new AWS Glue servi
            format = 'Parquet',
            write_compression = 'SNAPPY',
            external_location = 's3://[BUCKETNAME]/data/raw/sales_consolidate_parquet/',
-           partitioned_by = ARRAY['filename']) 
+           partitioned_by = ARRAY['filename']
            )
      AS SELECT * FROM "klb_db"."sales_consolidate";
      ```
@@ -179,7 +179,7 @@ In Redshift, there are two ways of loading data from S3 to Redshift using Redshi
      - Using COPY command to load data from S3 files
      - Using Redshift Spectrum to query into S3 data lake
           
-     In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the glue crawler object.
+In this exercise we will explore Redshift Spectrum to automatically create the table for us based on the glue crawler object.
 
 ### 4.1 Query in Redshift
 
