@@ -528,11 +528,11 @@ Glue supports incremental load to **master table** based on the specific key. Fo
           ```
           CREATE RLS POLICY policy_supplier_1
           WITH ( sup_name varchar(16383) )
-          USING ( sup_name = 'PT. SANGHIANG PERKASA' );
+          USING ( sup_name = 'SUP 35' );
 
           CREATE RLS POLICY policy_supplier_2
           WITH ( sup_name varchar(16383) )
-          USING ( sup_name = 'HEXPHARM' );
+          USING ( sup_name = 'SUP 28' );
 
           ATTACH RLS POLICY policy_supplier_1 ON klb_rs.sales_consolidate TO ROLE supplier_1;
           ATTACH RLS POLICY policy_supplier_2 ON klb_rs.sales_consolidate TO ROLE supplier_2;
