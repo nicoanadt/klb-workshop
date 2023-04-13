@@ -51,8 +51,8 @@ Welcome to the AWS Analytics Workshop. This workshop will go through multiple se
                          "S3:PutObjectTagging"
                      ],
                      "Resource": [
-                         "arn:aws:s3:::kalbe-workshop-test-130835040051-apse1",
-                         "arn:aws:s3:::kalbe-workshop-test-130835040051-apse1/*"
+                         "arn:aws:s3:::kalbe-workshop-test-130835040051-use1",
+                         "arn:aws:s3:::kalbe-workshop-test-130835040051-use1/*"
                      ]
                  }
              ]
