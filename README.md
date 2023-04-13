@@ -6,9 +6,9 @@ Welcome to the AWS Analytics Workshop. This workshop will go through multiple se
 
 ### 1.1 Allow S3 Access
 
-Open Amazon S3 console page.
 
-1. Create S3 bucket
+
+1. Open `Amazon S3` console page. Create S3 bucket
 
      `s3://[BUCKET-NAME]`, for example `s3://yourname-analytics-workshop-bucket`
      
@@ -23,7 +23,11 @@ Open Amazon S3 console page.
 
 3. Create inline policy for `TeamRole` role in your account
 
-    Open `IAM` > `Role` > Select `TeamRole` > Create Inline Policy
+    Open `IAM` console page.
+    
+    Click on `Role` > Search for `TeamRole` > Open `TeamRole`
+    
+    In TeamRole page, click `Add permissions` > `Create Inline Policy`
     
     Create new inline policy:
   
@@ -55,7 +59,7 @@ Open Amazon S3 console page.
     }
     ```
     
-    Click **Save Changes**
+    Click `Review policy` > Set a name `kalbe-data-access` > Click `Create Policy`
 
 4. Open the following link in new tab : https://s3.console.aws.amazon.com/s3/buckets/kalbe-workshop-test-130835040051-apse1?region=ap-southeast-1&prefix=data/sales_consolidate/&showversions=false 
 
