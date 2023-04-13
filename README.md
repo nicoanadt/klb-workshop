@@ -434,7 +434,7 @@ In this step, we will create S3 Gateway Endpoint so that Redshift cluster can co
           - Choose **Direct data connection**
           - Select Redshift connection `redshift-cluster-connection-dev`
           - Select Schema `klb_rs`
-          - Select new table name `sales_consolidate_glue`
+          - Select new table name `sales_consolidate_glue` (if not created yet, we can type it)
      - Save job as `klb_sales_consolidate_s3_to_rs`
      - Click Job Details
           - Choose IAM Role `AnalyticsworkshopGlueRole`
@@ -460,19 +460,19 @@ Glue supports incremental load to **master table** based on the specific key. Fo
           - Table: `Sales_consolidate`
      - **Add new transformation by selecting the + button if required**
           - Add `Select Fields` to choose specific column for this master table. 
-          - For example, `kodeprod`, `klasprod`, `prodname`, `namaklasprod`
+          - For example, `kodecab`, `namacab`
           - Add 'Drop Duplicate' to get distinct values only
      - Choose Data target
           - Choose **Direct data connection**
           - Select Redshift connection `redshift-cluster-connection-dev`
           - Select Schema `klb_rs`
-          - Select table name `master_product`
+          - Select table name `master_branch`
      - **Ensure to UPDATE existing keys and INSERT new rows**
           - Select `MERGE into target table`
-          - Select `kodeprod` as `matching keys`
+          - Select `kodecab` as `matching keys`
           - When matched: `Update table with the data from source`
           - When not matched: `Insert source data as a new row into table`
-     - Save job as `klb_load_master_product`
+     - Save job as `klb_load_master_branch`
      - Click Job Details
           - Choose IAM Role `AnalyticsworkshopGlueRole`
           - Enable `Automatically scale the number of workers`
